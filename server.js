@@ -17,7 +17,9 @@ io.on('connection', function (socket) {
 
   socket.on('message', function (data) {
     console.log(data.text);
-    socket.broadcast.emit('message', data);
+    //broadcast sends to everyone except person who sent
+    //socket.broadcast.emit()
+    io.emit('message', data);
   });
 
 });
