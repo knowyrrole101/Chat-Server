@@ -7,18 +7,20 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 //Serve Static Files
 app.use(express.static(__dirname + '/public'));
+
 io.on('connection', function (socket) {
   console.log('User connected via socket.io');
-  socket.emit('back-end-msg', {
+
+  socket.emit('message', {
     text: "Welcome to the chat application"
   });
 
-  socket.on('chat', function (data) {
-    console.log(data);
-    socket.broadcast.emit('chat-msg', data);
+  socket.on('message', function (data) {
+    console.log(data.text);
+    socket.broadcast.emit('message', data);
   });
-});
 
+});
 
 
 

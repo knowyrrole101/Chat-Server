@@ -4,13 +4,18 @@ socket.on('connect', function () {
   console.log("Connected to socket.io server!");
 });
 
-socket.on('back-end-msg', function(data){
+socket.on('message', function(data){
   console.log(data.text);
 });
 
-socket.on('chat-msg', function (data) {
-  console.log(data.text);
-});
+var $form = jQuery('#message-form');
 
-//add this in console on client side!
-socket.emit('chat', {text: "Hello Everyone!!!"});
+$form.on('submit', function(e) {
+  e.preventDefault();
+  var $message = $form.find('input[name=message]');
+  socket.emit('message', {
+    //pulls value out of form
+    text: $message.val()
+  });
+  $message.val('');
+});
