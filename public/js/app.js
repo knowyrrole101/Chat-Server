@@ -6,7 +6,12 @@ socket.on('connect', function () {
 
 socket.on('message', function(data){
   console.log(data.text);
-  jQuery('.messages').append('<p>'+ data.text +'</p>')
+  console.log(data.timestamp);
+  if(!data.timestamp){
+    jQuery('.messages').append('<p>'+ data.text + '</p>');  
+  } else {
+    jQuery('.messages').append('<p>'+ data.text +" - "+ data.timestamp+'</p>');
+  }
 });
 
 var $form = jQuery('#message-form');

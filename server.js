@@ -5,6 +5,7 @@ var app = express();
 var http = require('http').Server(app);
 //Format Socket.io expects
 var io = require('socket.io')(http);
+var moment = require('moment');
 //Serve Static Files
 app.use(express.static(__dirname + '/public'));
 
@@ -13,13 +14,18 @@ io.on('connection', function (socket) {
 
   socket.emit('message', {
     text: "Welcome to the chat application"
+    //timestamp property
   });
 
   socket.on('message', function (data) {
+    var now_timestamp = moment().local().format('h:mm:ss a');
+    console.log(now_timestamp);
     console.log(data.text);
+    data.timestamp = now_timestamp;
     //broadcast sends to everyone except person who sent
     //socket.broadcast.emit()
     io.emit('message', data);
+    //timestamp property
   });
 
 });
