@@ -7,11 +7,7 @@ socket.on('connect', function () {
 socket.on('message', function(data){
   console.log(data.text);
   console.log(data.timestamp);
-  if(!data.timestamp){
-    jQuery('.messages').append('<p>'+ data.text + '</p>');  
-  } else {
-    jQuery('.messages').append('<p>'+ data.text +" - "+ data.timestamp+'</p>');
-  }
+  jQuery('.messages').append('<p><strong>'+data.timestamp+' : </strong>'+data.text+'</p>');
 });
 
 var $form = jQuery('#message-form');
@@ -20,8 +16,8 @@ $form.on('submit', function(e) {
   e.preventDefault();
   var $message = $form.find('input[name=message]');
   socket.emit('message', {
-    //pulls value out of form
     text: $message.val()
   });
+  //empty form
   $message.val('');
 });
