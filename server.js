@@ -13,6 +13,7 @@ io.on('connection', function (socket) {
   console.log('User connected via socket.io');
   var now_timestamp = moment().local().format('h:mm:ss a');
   socket.emit('message', {
+    name: "System",
     text: "Welcome to the chat application",
     timestamp: now_timestamp
     //timestamp property
