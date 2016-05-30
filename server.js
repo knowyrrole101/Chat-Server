@@ -9,6 +9,8 @@ var moment = require('moment');
 //Serve Static Files
 app.use(express.static(__dirname + '/public'));
 
+var client_info = {};
+
 io.on('connection', function (socket) {
   console.log('User connected via socket.io');
   var now_timestamp = moment().local().format('h:mm:ss a');
@@ -19,6 +21,16 @@ io.on('connection', function (socket) {
     //timestamp property
   });
 
+  socket.on('join_room', function (req) {
+    client_info[socket.id] = req;
+    socket.join(req.room);
+    socket.broadcast.to(req.room).emit('message', {
+      name: 'System',
+      text: req.name + ' has joined!',
+      timestamp: moment().valueOf()
+    });
+  });
+
   socket.on('message', function (data) {
     var now_timestamp = moment().local().format('h:mm:ss a');
     console.log(now_timestamp);
@@ -26,9 +38,12 @@ io.on('connection', function (socket) {
     data.timestamp = now_timestamp;
     //broadcast sends to everyone except person who sent
     //socket.broadcast.emit()
-    io.emit('message', data);
+    io.to(client_info[socket.id].room).emit('message', data);
     //timestamp property
   });
+
+
+
 
 });
 

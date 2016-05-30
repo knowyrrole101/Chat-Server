@@ -8,7 +8,10 @@ jQuery('.room-title').text(room);
 
 socket.on('connect', function () {
   console.log('Connected to socket.io server!');
-
+  socket.emit('join_room', {
+    name: name,
+    room: room
+  });
 });
 
 socket.on('message', function(data){
