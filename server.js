@@ -22,12 +22,13 @@ io.on('connection', function (socket) {
   });
 
   socket.on('join_room', function (req) {
+    var now_timestamp = moment().local().format('h:mm:ss a');
     client_info[socket.id] = req;
     socket.join(req.room);
     socket.broadcast.to(req.room).emit('message', {
       name: 'System',
       text: req.name + ' has joined!',
-      timestamp: moment().valueOf()
+      timestamp: now_timestamp
     });
   });
 
